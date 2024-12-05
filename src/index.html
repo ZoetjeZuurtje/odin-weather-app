@@ -3,9 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Weather App</title>
+  <title>Weatherly</title>
 </head>
 <body>
-  
+  <main>
+    <header>
+      <h1>Weatherly</h1>
+      <button class="refresh-button"></button>
+    </header>
+    <div class="temperature">
+      <div class="clouds">
+
+      </div>
+      <h1><span id="real-temp">??</span>&deg;</h1>
+      <h2>Feels like <span id="feels-like-temp">??</span>&deg;</h2>
+    </div>
+
+    <div class="weather flex">
+      <div class="wind">
+        <img id="wind-direction" src="" alt="l"> <!-- rotated to match wind degrees -->
+        <span id="wind-speed">??m/s</span>
+      </div>
+      <div class="precipitation">
+        <img id="precipitation-type" src="" alt="">
+        <span id="precipitation-speed">??mm/uur</span>
+      </div>
+    </div>
+  </main>
 </body>
 </html>

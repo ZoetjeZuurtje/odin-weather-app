@@ -26,6 +26,26 @@ function getLocation (after = () => {}) {
   })
 }
 
+function processWeatherData (data) {
+  const weatherData = {
+    temperature: {  // Kelvin by default. Celsius with standard units, and Fahrenheit with imperial units.
+      //min: data.main.temp_min,
+      //max: data.main.temp_max,
+      real: data.main.temp,
+      feels_like: data.main.feels_like
+    },
+    weather: {
+      clouds: data.clouds.all,          // Percentage. 0.2 means 20%
+      rain: data?.rain['1h'] ?? 0,      // mm/hour
+      snow: data?.snow['1h'] ?? 0,      // mm/hour
+      windSpeed: data.wind.speed,       // meter/sec by default. miles/hour with imperial units
+      windDirection: data.wind.deg,     // meteorological (0° North wind, 90° East, etc)
+      //visibility: data.visibility.value // Meters
+    }
+  }
+  return weatherData
+}
+
 async function getWeatherData () {
   if (config.coords.latitude === null) {
     getLocation(getWeatherData)
@@ -36,26 +56,5 @@ async function getWeatherData () {
   const response = await fetch(url)
   const data = await response.json()
 
-  const weatherData = processWeatherData(data)
-  console.log(weatherData)
-}
-
-function processWeatherData (data) {
-  const weatherData = {
-    temperature: {  // Kelvin by default. Celsius with standard units, and Fahrenheit with imperial units.
-      min: data.main.temp_min,
-      max: data.main.temp_max,
-      real: data.main.temp,
-      feels_like: data.main.feels_like
-    },
-    weather: {
-      clouds: data.clouds.all,          // Percentage. 0.2 means 20%
-      rain: data?.rain['1h'] ?? 0,      // mm/hour
-      snow: data?.snow['1h'] ?? 0,      // mm/hour
-      windSpeed: data.wind.speed,       // meter/sec by default. miles/hour with imperial units
-      windDirection: data.wind.deg,     // meteorological (0° North wind, 90° East, etc)
-      visibility: data.visibility.value // Meters
-    }
-  }
-  return weatherData
+  return processWeatherData(data)
 }
