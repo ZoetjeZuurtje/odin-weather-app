@@ -6,7 +6,8 @@ const config = {
   coords: {
     latitude: null,
     longitude: null
-  }
+  },
+  units: 'metric' // Valid values: 'standard', 'metric', 'imperial'
 }
 
 function setLocation (pos) {
@@ -31,7 +32,28 @@ async function getWeatherData () {
     return
   }
 
-  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${config.coords.latitude}&lon=${config.coords.longitude}&appid=${config.key}`
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${config.coords.latitude}&lon=${config.coords.longitude}&appid=${config.key}&units=${units}`
   const response = await fetch(url)
-  const weatherData = await response.json()
+  const data = await response.json()
+
+  const weatherData = processWeatherData(data)
+  console.log(weatherData)
+}
+
+function processWeatherData (data) {
+  const weatherData = {
+    temperature: {
+      min: data.main.temp_min,
+      max: data.main.temp_max,
+      real: data.main.temp,
+      feels_like: data.main.feels_like
+    },
+    weather: {
+      clouds: data.clouds.all,
+      rain: data.rain['1h'],
+      windSpeed: data.wind.speed,
+      windDirection: data.wind.deg
+    }
+  }
+  return weatherData
 }
