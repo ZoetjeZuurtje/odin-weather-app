@@ -1,0 +1,20 @@
+{
+  "name": "odin-weather-app",
+  "version": "1.0.0",
+  "description": "Small weather application to learn how APIs work.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "standard --fix",
+    "build": "webpack --config webpack.prod.js",
+    "watch": "webpack --watch --config webpack.dev.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "css-loader": "^7.1.2",
+    "html-webpack-plugin": "^5.6.3",
+    "mini-css-extract-plugin": "^2.9.2",
+    "webpack": "^5.97.0",
+    "webpack-cli": "^5.1.4"
+  }
+}
