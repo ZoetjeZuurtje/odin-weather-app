@@ -16,12 +16,14 @@
     </header>
 
     <div class="temperature">
-      <div class="clouds">
-        <!-- <span id="cloud-symbol" class="material-design-icons">partly_cloudy_day</span> -->
-        <span id="clouds-coverage"></span>
+      <div>
+        <h2><span id="real-temp">??</span>&deg;C</h1>
+        <h3>Feels like <span id="feels-like-temp">??</span>&deg;C</h2>
       </div>
-      <h2><span id="real-temp">??</span>&deg;C</h1>
-      <h3>Feels like <span id="feels-like-temp">??</span>&deg;C</h2>
+      <div class="clouds">
+        <span id="cloud-symbol" class="material-design-icons">partly_cloudy_day</span> <!-- bedtime, sunny, partly_cloudy_night, partly_cloudy_day are acceptable values -->
+        <!-- <span id="clouds-coverage"></span> -->
+      </div>
     </div>
     <hr>
     <div class="wind flex">

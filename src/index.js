@@ -28,6 +28,8 @@ function getLocation (after = () => {}) {
 }
 
 function processWeatherData (data) {
+  const currentTime = new Date()
+  const isNight = data.sys.sundown < currentTime && currentTime < data.sys.sunrise
   const weatherData = {
     temperature: { // Kelvin by default. Celsius with standard units, and Fahrenheit with imperial units.
       // min: data.main.temp_min,
@@ -40,7 +42,8 @@ function processWeatherData (data) {
       rain: data?.rain['1h'] ?? 0, // mm/hour
       snow: data?.snow['1h'] ?? 0, // mm/hour
       windSpeed: data.wind.speed, // meter/sec by default. miles/hour with imperial units
-      windDirection: data.wind.deg // meteorological (0° North wind, 90° East, etc)
+      windDirection: data.wind.deg, // meteorological (0° North wind, 90° East, etc)
+      isNight
       // visibility: data.visibility.value // Meters
     }
   }
@@ -77,6 +80,24 @@ function setPrecipitation (precipitationRate, precipitationType) {
 }
 
 function setTemperature (temp, feelsLike) {
-  document.querySelector('#real-temp').textContent = temp;
-  document.querySelector('#feels-like-temp').textContent = feelsLike;
+  document.querySelector('#real-temp').textContent = temp
+  document.querySelector('#feels-like-temp').textContent = feelsLike
+}
+
+function setCloudiness (fraction, isNight) {
+  const icons = {
+    night: {
+      cloudy: 'partly_cloudy_night',
+      clear: 'bedtime'
+    },
+    day: {
+      cloudy: 'partly_cloudy_day',
+      clear: 'sunny'
+    }
+  }
+
+  isNight = isNight ? 'night' : 'day'
+  const isCloudy = fraction > 0.3 ? 'cloudy' : 'clear'
+
+  document.querySelector('#cloud-symbol').textContent = icons[isNight][isCloudy]
 }

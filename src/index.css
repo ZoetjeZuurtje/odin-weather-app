@@ -62,3 +62,12 @@ footer {
   background-color: blue;
   color: white;
 }
+
+.temperature {
+  display: flex;
+  justify-content: space-around;
+}
+
+#cloud-symbol {
+  font-size: 2em;
+}
