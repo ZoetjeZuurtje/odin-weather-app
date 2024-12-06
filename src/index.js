@@ -19,24 +19,25 @@ function setLocation (pos) {
 function getLocation (after = () => {}) {
   if (!navigator.geolocation) {
     console.log('Geolocation is not supported by your browser')
-    return
+    return undefined
   }
-  navigator.geolocation.getCurrentPosition((position) => {
-    setLocation(position)
-    after()
+  navigator.geolocation.getCurrentPosition(setLocation, () => {}, {
+    enableHighAccuracy: false,
+    timeout: 5000,
+    maximumAge: Infinity
   })
 }
 
 function processWeatherData (data) {
   const currentTime = new Date()
   const isNight = data.sys.sundown < currentTime && currentTime < data.sys.sunrise
-  let precipitationType = 'rainy';
-  let rainRate = data?.rain['1h'] ?? 0;
-  let snowRate = data?.snow['1h'] ?? 0;
-  let precipitationRate = snowRate > rainRate ? snowRate : rainRate;
-  
+  let precipitationType = 'rainy'
+  const rainRate = data?.rain?.['1h'] ?? 0
+  const snowRate = data?.snow?.['1h'] ?? 0
+  const precipitationRate = snowRate > rainRate ? snowRate : rainRate
+
   if (snowRate > rainRate) {
-    precipitationType = 'weather_snowy';
+    precipitationType = 'weather_snowy'
   }
 
   const weatherData = {
@@ -48,28 +49,28 @@ function processWeatherData (data) {
     },
     weather: {
       clouds: data.clouds.all, // Percentage. 0.2 means 20%
-      precipitationRate: precipitationRate, // mm/hour
-      precipitationType: precipitationType, // mm/hour
+      precipitationRate, // mm/hour
+      precipitationType, // mm/hour
       windSpeed: data.wind.speed, // meter/sec by default. miles/hour with imperial units
-      windDirection: data.wind.deg, // meteorological (0° North wind, 90° East, etc)
+      windDirection: data.wind.deg // meteorological (0° North wind, 90° East, etc)
       // visibility: data.visibility.value // Meters
     },
-    isNight: isNight
+    isNight
   }
   return weatherData
 }
 
 async function getWeatherData () {
   if (config.coords.latitude === null) {
-    getLocation(getWeatherData)
-    return
+    getLocation()
+    return undefined
   }
 
   const url = `https://api.openweathermap.org/data/2.5/weather?lat=${config.coords.latitude}&lon=${config.coords.longitude}&appid=${config.key}&units=${config.units}`
   const response = await fetch(url)
   const data = await response.json()
 
-  return processWeatherData(data)
+  return data
 }
 
 function setWind (speed, degrees) {
@@ -112,8 +113,30 @@ function setCloudiness (fraction, isNight) {
 }
 
 function setWeatherData (processedWeatherData) {
-  setWind(processedWeatherData.weather.windSpeed, processedWeatherData.weather.windDirection);
-  setPrecipitation(processedWeatherData.weather.precipitationRate, processedWeatherData.weather.precipitationType);
-  setCloudiness(processedWeatherData.weather.clouds, processedWeatherData.isNight);
+  setWind(processedWeatherData.weather.windSpeed, processedWeatherData.weather.windDirection)
+  setPrecipitation(processedWeatherData.weather.precipitationRate, processedWeatherData.weather.precipitationType)
+  setCloudiness(processedWeatherData.weather.clouds, processedWeatherData.isNight)
   setTemperature(processedWeatherData.temperature.real, processedWeatherData.temperature.feels_like)
 }
+
+async function refreshData(counter = 1) {
+  if (counter == 6) {
+    console.error('could not fetch data!')
+    return undefined;
+  }
+  counter++;
+  try {
+    const data = await getWeatherData() ?? new Error('Error fetching data. Retrying...')
+    const processedData = processWeatherData(data);
+    setWeatherData(processedData)
+  } catch (error) {
+    console.log(error)
+    setTimeout(() => {
+      refreshData(counter)
+    }, 1e3 * counter);
+    return undefined;
+  }
+  
+}
+
+refreshData()
