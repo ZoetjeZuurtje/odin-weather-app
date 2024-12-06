@@ -1,6 +1,8 @@
 main {
   background-color: skyblue;
   width: fit-content;
+  min-width: 200px;
+  min-height: 300px;
   overflow: hidden;
   display: flex;
   flex-direction: column;

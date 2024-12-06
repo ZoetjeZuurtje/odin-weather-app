@@ -75,3 +75,8 @@ function setPrecipitation (precipitationRate, precipitationType) {
   iconElement.textContent = icon
   valueElement.textContent = `${precipitationRate}mm/uur`
 }
+
+function setTemperature (temp, feelsLike) {
+  document.querySelector('#real-temp').textContent = temp;
+  document.querySelector('#feels-like-temp').textContent = feelsLike;
+}
