@@ -1,0 +1,52 @@
+.dropdown {
+    --border-width: 2px;
+    --border-color: black;
+    --width: 40px;
+    --button-background-color: lightgrey;
+    position: relative;
+
+    & button {
+        background-color: var(--button-background-color);
+        border: var(--border-color) var(--border-width) solid;
+        width: var(--width);
+        position: relative;
+    }
+    & .dropdown-content {
+        border: var(--border-color) var(--border-width) solid;
+        visibility: hidden;
+        position: absolute;
+        height: fit-content;
+        background-color: white;
+
+        /* dropdown positioning */
+        transform: translateY(100%);
+        bottom: var(--border-width);
+        &.top-left {
+            transform: translateX(calc(var(--width) - 100%)) translateY(-100%);
+            top: var(--border-width);
+        }
+        &.top-right {
+            transform: translateY(-100%);
+            top: var(--border-width);
+        }
+        &.bottom-left {
+            transform: translateX(calc(var(--width) - 100%)) translateY(100%);
+        }
+    }
+}
+
+.dropdown.open {
+    & button {
+        z-index: 3;
+    }
+    &:not(:has(:is(.top-left, .top-right))) button {
+        border-bottom-color: var(--button-background-color);
+    }
+    &:has(:is(.top-left, .top-right)) button {
+        border-top-color: var(--button-background-color);
+    }
+    & .dropdown-content {
+        visibility: visible;
+        z-index: 2;
+    }
+}

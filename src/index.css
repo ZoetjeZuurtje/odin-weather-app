@@ -1,8 +1,8 @@
 main {
   background-color: skyblue;
   width: fit-content;
-  min-width: 200px;
-  min-height: 300px;
+  min-width: 20em;
+  min-height: 30em;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -20,8 +20,8 @@ header {
   color: white;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.8em;
-  & > button {
+  font-size: 0.6em;
+  & button {
     background-color: transparent;
     color: white;
     border: none;
@@ -40,7 +40,7 @@ h1, h2, h3 {
 
 #wind-direction {
   --direction: -45deg;
-  transition: transform 500ms;
+  transition: transform 1000ms;
   transform: rotateZ(var(--direction));
   display: inline-block;
 }
@@ -70,4 +70,100 @@ footer {
 
 #cloud-symbol {
   font-size: 2em;
+}
+
+.switch {
+  --dot-size: 1em;
+  --switch-padding: calc(var(--dot-size) * 0.15);
+  position: relative;
+  display: inline-block;
+  width: calc(var(--dot-size) * 2);
+  height: calc(var(--dot-size) + (var(--switch-padding) * 2));
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  top: var(--switch-padding);
+  left: var(--switch-padding);
+  height: var(--dot-size);
+  width: var(--dot-size);
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform:  translateX(calc(var(--dot-size) - (var(--switch-padding) * 2)));
+  -ms-transform:      translateX(calc(var(--dot-size) - (var(--switch-padding) * 2)));
+  transform:          translateX(calc(var(--dot-size) - (var(--switch-padding) * 2)));
+}
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.dropdown {
+  --button-background-color: white;
+  & *{
+    color: black;
+  }
+}
+
+.dropdown-content {
+  width: 300px;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr calc(var(--width) - 2px);
+  grid-auto-flow: row;
+}
+
+.options-name,
+.options-input {
+  padding: 0.5em;
+  font-size: 1.5em;
+}
+.options-input {
+  border-left: solid black 1px;
+  padding: 0;
+}
+
+.border-top {
+  border-top: solid black 1px;
+}
+
+.options-input > button {
+  border: none;
+  background-color: transparent;
+
+  height: 100%;
+  width: 100%;
 }

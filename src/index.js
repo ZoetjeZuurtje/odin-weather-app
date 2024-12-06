@@ -1,4 +1,5 @@
 import 'normalize.css'
+import './dropdown/dropdown'
 import './index.css'
 import keys from './api_keys.json'
 
@@ -75,8 +76,9 @@ async function getWeatherData () {
 
 function setWind (speed, degrees) {
   document.querySelector('#wind-direction').style.setProperty('--direction', `${degrees - 45}deg`)
+  const unit = config.units === 'metric' ? 'meter/sec' : 'miles/hour'
 
-  document.querySelector('#wind-speed').textContent = `${speed}m/s`
+  document.querySelector('#wind-speed').textContent = `${speed}` + unit
 }
 
 function setPrecipitation (precipitationRate, precipitationType) {
@@ -86,12 +88,14 @@ function setPrecipitation (precipitationRate, precipitationType) {
   const icon = precipitationType // TODO: add more precipitation types or icons.
 
   iconElement.textContent = icon
-  valueElement.textContent = `${precipitationRate}mm/uur`
+  valueElement.textContent = `${precipitationRate}` + 'mm/hour';
 }
 
 function setTemperature (temp, feelsLike) {
-  document.querySelector('#real-temp').textContent = temp
-  document.querySelector('#feels-like-temp').textContent = feelsLike
+  const unit = config.units === 'metric' ? '°C' : '°F'
+
+  document.querySelector('#real-temp').textContent = temp.toString() + unit
+  document.querySelector('#feels-like-temp').textContent = feelsLike.toString() + unit
 }
 
 function setCloudiness (fraction, isNight) {
@@ -138,8 +142,14 @@ async function refreshData (counter = 1) {
   }
 }
 
+function switchUnits () {
+  config.units = config.units === 'metric' ? 'imperial' : 'metric';
+  refreshData();
+}
+
 function init() {
   document.querySelector('#refresh-button').addEventListener('click', refreshData);
+  document.querySelector('#unit-conversion-button').addEventListener('click', switchUnits);
   refreshData()
 }
 
