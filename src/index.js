@@ -1,3 +1,4 @@
+import 'normalize.css'
 import './index.css'
 import keys from './api_keys.json'
 
@@ -28,19 +29,19 @@ function getLocation (after = () => {}) {
 
 function processWeatherData (data) {
   const weatherData = {
-    temperature: {  // Kelvin by default. Celsius with standard units, and Fahrenheit with imperial units.
-      //min: data.main.temp_min,
-      //max: data.main.temp_max,
+    temperature: { // Kelvin by default. Celsius with standard units, and Fahrenheit with imperial units.
+      // min: data.main.temp_min,
+      // max: data.main.temp_max,
       real: data.main.temp,
       feels_like: data.main.feels_like
     },
     weather: {
-      clouds: data.clouds.all,          // Percentage. 0.2 means 20%
-      rain: data?.rain['1h'] ?? 0,      // mm/hour
-      snow: data?.snow['1h'] ?? 0,      // mm/hour
-      windSpeed: data.wind.speed,       // meter/sec by default. miles/hour with imperial units
-      windDirection: data.wind.deg,     // meteorological (0° North wind, 90° East, etc)
-      //visibility: data.visibility.value // Meters
+      clouds: data.clouds.all, // Percentage. 0.2 means 20%
+      rain: data?.rain['1h'] ?? 0, // mm/hour
+      snow: data?.snow['1h'] ?? 0, // mm/hour
+      windSpeed: data.wind.speed, // meter/sec by default. miles/hour with imperial units
+      windDirection: data.wind.deg // meteorological (0° North wind, 90° East, etc)
+      // visibility: data.visibility.value // Meters
     }
   }
   return weatherData
@@ -52,9 +53,14 @@ async function getWeatherData () {
     return
   }
 
-  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${config.coords.latitude}&lon=${config.coords.longitude}&appid=${config.key}&units=${units}`
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${config.coords.latitude}&lon=${config.coords.longitude}&appid=${config.key}&units=${config.units}`
   const response = await fetch(url)
   const data = await response.json()
 
   return processWeatherData(data)
+}
+
+function setWindDirection (degrees) {
+  document.querySelector('#wind-direction').style.setProperty('--direction', `${degrees - 45}deg`);
+  console.log(degrees)
 }

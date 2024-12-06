@@ -1,34 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Weatherly</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
+
 <body>
   <main>
     <header>
       <h1>Weatherly</h1>
-      <button class="refresh-button"></button>
+      <button class="refresh-button material-design-icons">autorenew</button>
     </header>
+
     <div class="temperature">
       <div class="clouds">
-
+        <img id="clouds-symbol" src="" alt="">
+        <span id="clouds-coverage"></span>
       </div>
-      <h1><span id="real-temp">??</span>&deg;</h1>
-      <h2>Feels like <span id="feels-like-temp">??</span>&deg;</h2>
+      <h2><span id="real-temp">??</span>&deg;C</h1>
+      <h3>Feels like <span id="feels-like-temp">??</span>&deg;C</h2>
     </div>
-
-    <div class="weather flex">
-      <div class="wind">
-        <img id="wind-direction" src="" alt="l"> <!-- rotated to match wind degrees -->
-        <span id="wind-speed">??m/s</span>
-      </div>
-      <div class="precipitation">
-        <img id="precipitation-type" src="" alt="">
-        <span id="precipitation-speed">??mm/uur</span>
-      </div>
+    <hr>
+    <div class="wind flex">
+      <span id="wind-direction" class="material-design-icons">near_me</span> <!-- rotated to match wind degrees -->
+      <span id="wind-speed">??m/s</span>
     </div>
+    <hr>
+    <div class="precipitation flex">
+      <span class="precipitation-type material-design-icons">weather_snowy</span> <!-- acceptable values: rainy, weather_snowy, thunderstorm -->
+      <span id="precipitation-speed">??mm/uur</span>
+    </div>
+    <footer>Made with <span class="material-design-icons">favorite</span> by Bram</footer>
   </main>
 </body>
+
 </html>

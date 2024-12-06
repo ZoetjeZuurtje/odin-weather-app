@@ -1,0 +1,62 @@
+main {
+  background-color: skyblue;
+  width: fit-content;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 200px;
+  & > * {
+    padding: 0 1em;
+  }
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+  background-color: blue;
+  display: flex;
+  color: white;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8em;
+  & > button {
+    background-color: transparent;
+    color: white;
+    border: none;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+h1, h2, h3 {
+  margin: 0;
+}
+
+.material-design-icons {
+  font-family: 'Material Symbols Outlined';
+}
+
+#wind-direction {
+  --direction: -45deg;
+  transition: transform 200ms;
+  transform: rotateZ(var(--direction));
+  display: inline-block;
+}
+
+hr {
+  width: 100%;
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+
+}
+
+h3 {
+  font-size: 0.6em;
+}
+footer {
+  background-color: blue;
+  color: white;
+}
