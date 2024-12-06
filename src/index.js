@@ -60,7 +60,18 @@ async function getWeatherData () {
   return processWeatherData(data)
 }
 
-function setWindDirection (degrees) {
-  document.querySelector('#wind-direction').style.setProperty('--direction', `${degrees - 45}deg`);
-  console.log(degrees)
+function setWind (speed, degrees) {
+  document.querySelector('#wind-direction').style.setProperty('--direction', `${degrees - 45}deg`)
+
+  document.querySelector('#wind-speed').textContent = `${speed}m/s`
+}
+
+function setPrecipitation (precipitationRate, precipitationType) {
+  const iconElement = document.querySelector('#precipitation-type')
+  const valueElement = document.querySelector('#precipitation-speed')
+
+  const icon = precipitationType // TODO: add more precipitation types or icons.
+
+  iconElement.textContent = icon
+  valueElement.textContent = `${precipitationRate}mm/uur`
 }
