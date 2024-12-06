@@ -30,6 +30,15 @@ function getLocation (after = () => {}) {
 function processWeatherData (data) {
   const currentTime = new Date()
   const isNight = data.sys.sundown < currentTime && currentTime < data.sys.sunrise
+  let precipitationType = 'rainy';
+  let rainRate = data?.rain['1h'] ?? 0;
+  let snowRate = data?.snow['1h'] ?? 0;
+  let precipitationRate = snowRate > rainRate ? snowRate : rainRate;
+  
+  if (snowRate > rainRate) {
+    precipitationType = 'weather_snowy';
+  }
+
   const weatherData = {
     temperature: { // Kelvin by default. Celsius with standard units, and Fahrenheit with imperial units.
       // min: data.main.temp_min,
@@ -39,13 +48,13 @@ function processWeatherData (data) {
     },
     weather: {
       clouds: data.clouds.all, // Percentage. 0.2 means 20%
-      rain: data?.rain['1h'] ?? 0, // mm/hour
-      snow: data?.snow['1h'] ?? 0, // mm/hour
+      precipitationRate: precipitationRate, // mm/hour
+      precipitationType: precipitationType, // mm/hour
       windSpeed: data.wind.speed, // meter/sec by default. miles/hour with imperial units
       windDirection: data.wind.deg, // meteorological (0° North wind, 90° East, etc)
-      isNight
       // visibility: data.visibility.value // Meters
-    }
+    },
+    isNight: isNight
   }
   return weatherData
 }
@@ -100,4 +109,11 @@ function setCloudiness (fraction, isNight) {
   const isCloudy = fraction > 0.3 ? 'cloudy' : 'clear'
 
   document.querySelector('#cloud-symbol').textContent = icons[isNight][isCloudy]
+}
+
+function setWeatherData (processedWeatherData) {
+  setWind(processedWeatherData.weather.windSpeed, processedWeatherData.weather.windDirection);
+  setPrecipitation(processedWeatherData.weather.precipitationRate, processedWeatherData.weather.precipitationType);
+  setCloudiness(processedWeatherData.weather.clouds, processedWeatherData.isNight);
+  setTemperature(processedWeatherData.temperature.real, processedWeatherData.temperature.feels_like)
 }
