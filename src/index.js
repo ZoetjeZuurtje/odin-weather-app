@@ -142,7 +142,8 @@ async function refreshData (counter = 1) {
   }
 }
 
-function switchUnits () {
+function switchUnits (event) {
+  event.target.textContent = event.target.textContent === '°F' ? '°C' : '°F';
   config.units = config.units === 'metric' ? 'imperial' : 'metric';
   refreshData();
 }

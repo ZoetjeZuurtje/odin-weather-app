@@ -65,7 +65,8 @@ footer {
 
 .temperature {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  font-size: 2em;
 }
 
 #cloud-symbol {
@@ -133,6 +134,7 @@ input:checked + .slider:before {
 
 .dropdown {
   --button-background-color: white;
+  --width: 10em;
   & *{
     color: black;
   }
