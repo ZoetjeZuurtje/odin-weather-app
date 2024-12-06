@@ -119,24 +119,28 @@ function setWeatherData (processedWeatherData) {
   setTemperature(processedWeatherData.temperature.real, processedWeatherData.temperature.feels_like)
 }
 
-async function refreshData(counter = 1) {
-  if (counter == 6) {
+async function refreshData (counter = 1) {
+  if (counter === 6) {
     console.error('could not fetch data!')
-    return undefined;
+    return undefined
   }
-  counter++;
+  counter++
   try {
     const data = await getWeatherData() ?? new Error('Error fetching data. Retrying...')
-    const processedData = processWeatherData(data);
+    const processedData = processWeatherData(data)
     setWeatherData(processedData)
   } catch (error) {
     console.log(error)
     setTimeout(() => {
       refreshData(counter)
-    }, 1e3 * counter);
-    return undefined;
+    }, 1e3 * counter)
+    return undefined
   }
-  
 }
 
-refreshData()
+function init() {
+  document.querySelector('#refresh-button').addEventListener('click', refreshData);
+  refreshData()
+}
+
+init();
